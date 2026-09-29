@@ -69,6 +69,31 @@ examples/git-explainer/        Git 讲解成片和案例说明
 
 从 [`SKILL.md`](skills/knowledge-explainer-video/SKILL.md) 开始阅读；需要字段说明时看[项目清单规范](skills/knowledge-explainer-video/references/project-manifest.md)。Skill 已自带可复制的 [项目清单模板](skills/knowledge-explainer-video/assets/project-manifest.template.json)。
 
+## 用到了哪些技术和“插件”
+
+这套项目不是一个视频模型，而是一条可以复核的制作链：
+
+```text
+Codex 读取 Skill 规则 → JSON 项目清单记录讲稿、素材与时间线
+→ Node.js 生成 Remotion 工程 → React/TypeScript 组织画面和声音
+→ Remotion 渲染视频 → Python + FFmpeg 检查成片
+```
+
+| 技术／组件 | 在这个仓库里的具体作用 |
+|---|---|
+| **Codex Skill（Markdown + YAML）** | [`SKILL.md`](skills/knowledge-explainer-video/SKILL.md) 定义何时使用、两次确认和成片标准；[`agents/openai.yaml`](skills/knowledge-explainer-video/agents/openai.yaml) 给 Codex 提供展示信息与显式调用策略。[`.skill-metadata.yaml`](skills/knowledge-explainer-video/.skill-metadata.yaml) 提供千问办公的示例提示词。这些是宿主入口配置，不是视频渲染插件。 |
+| **JSON 项目清单** | [`project-manifest.json` 模板](skills/knowledge-explainer-video/assets/project-manifest.template.json) 保存资料来源、批准状态、旁白句、人物与物件、画面时间、素材许可和转场承接物；脚本和动画读取同一份数据，避免各自维护一套时间线。 |
+| **Node.js（内置文件系统模块）** | [`build.mjs`](skills/knowledge-explainer-video/scripts/build.mjs) 检查能否进入预览或正式制作，复制已选素材与录音，把字幕 JSON 导出为 SRT，并生成独立的 Remotion 项目。它负责“组装工程”，不负责自动写讲稿或生成插画。 |
+| **React 19.3 + TypeScript 5.9** | 把角色、插画、真实视频、文字、字幕和转场写成可复用的画面组件；TypeScript 给场景和项目清单定义数据结构，减少字段与时间线接错的风险。核心代码见[画面组件](skills/knowledge-explainer-video/assets/remotion-template/src/KnowledgeExplainer.tsx)和[类型定义](skills/knowledge-explainer-video/assets/remotion-template/src/types.ts)。 |
+| **Remotion 4.0 + `@remotion/cli`** | 用 `Composition`、`Sequence`、逐帧时间和插值动画控制镜头；CLI 打开预览、导出代表帧及 H.264 MP4。复杂知识关系可在 [`CustomScenes.tsx`](skills/knowledge-explainer-video/assets/remotion-template/src/CustomScenes.tsx) 注册专门场景／转场，基础模板不会自动把文字卡片变成完整动画。 |
+| **`@remotion/media`** | 在 Remotion 时间线上放入真实视频、人工旁白和背景音乐；模板按旁白句时间给音乐做简单避让，避免盖住人声。 |
+| **`@remotion/captions` 与自有字幕层** | 当前使用该包的 `Caption` **类型定义**；实际上屏由项目的 `CaptionLayer` 根据字幕 JSON 和当前帧完成，SRT 由 `build.mjs` 导出。它**没有**在本仓库里自动识别语音或替人断句。 |
+| **Python 3 标准库** | [`validate_project.py`](skills/knowledge-explainer-video/scripts/validate_project.py) 检查清单、素材引用、时间范围、授权字段和制作闸门；[`qa_render.py`](skills/knowledge-explainer-video/scripts/qa_render.py) 汇总成片检查报告。不要求额外的 Python 包来运行这两个脚本。 |
+| **FFmpeg / FFprobe** | 质检时读取视频编码、画幅、帧率和时长，完整解码，并截取转场边界、动作起中终点和字幕代表帧供人工审片。它们是需在本机安装的外部命令行工具。 |
+| **Git / GitHub** | 管理 Skill 与模板版本，并展示这个仓库的 [Git 案例成片](examples/git-explainer/README.md)；它们不是制作视频时的画面或配音引擎。 |
+
+Remotion、React、TypeScript 和三个 `@remotion/*` 包的精确锁定版本见 [`package.json`](skills/knowledge-explainer-video/assets/remotion-template/package.json)与 [`package-lock.json`](skills/knowledge-explainer-video/assets/remotion-template/package-lock.json)。**图片生成、真实视频下载和配音克隆不是本仓库内置插件**：插画可由任务环境里可用的生成工具制作并人工选定；真实视频和音乐要核对授权；正式旁白按这个 Skill 的标准使用人工录音。
+
 ## 开发与验证
 
 只使用 Skill 策划内容时，不必先安装渲染依赖。要生成 Remotion 工程，需要 Node.js/npm；脚本校验使用 Python，视频检查使用 FFmpeg/FFprobe。具体运行命令和状态闸门以 [Skill 文档](skills/knowledge-explainer-video/SKILL.md)为准。仓库根目录可运行：
