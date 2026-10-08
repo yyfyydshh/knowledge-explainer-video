@@ -55,6 +55,26 @@ $knowledge-explainer-video
 
 人物贴图和插画默认**不套白框**；只有电脑屏幕、文件、窗口等真实容器才有边界。箭头要有明确起点和目标，转场尽量由上一画面已有的物件自然变化而来。可以多生成素材候选，但成片只保留准确、统一、真正帮助理解的画面。
 
+## 动画能力与长期复用（Skill 1.3.0）
+
+除了画风，制作还要先确定观众的观看过程。新版增加：
+
+- [十二原则的知识动画用法](skills/knowledge-explainer-video/references/motion-language.md)：预备动作、关键姿态、路线、速度、接触与反馈，以及多种有语义依据的转场。
+- [历史反馈与回归项](skills/knowledge-explainer-video/references/feedback-and-regressions.md)：人物是行动组件、避免 PPT 化和无关装饰、无穿模、字幕安全区与全片节奏。区分通用要求和 Git 案例专用选择。
+- [特殊视频素材融合](skills/knowledge-explainer-video/references/footage-integration.md)：按源时间码与内容拆解录屏或视频，安排动画切入、局部解释、原声与切出，不只是插入播放框。
+- [动作谱模板](skills/knowledge-explainer-video/assets/motion-score.template.json)与 [校验脚本](skills/knowledge-explainer-video/scripts/validate_motion_score.py)：检查动作区间、阶段顺序、文字交接和锚点几何；不自动认定视觉流畅。
+
+- [组件交互契约](skills/knowledge-explainer-video/references/interaction-contracts.md)：容器出入的前后遮挡、跨镜物件所有权、镜头与指针联动，以及多人操作和选择的完整过程。
+- [配乐、混音与 MP4 导出](skills/knowledge-explainer-video/references/audio-and-export.md)：按讲解试听选曲、从干净旁白重混、许可署名、版本锁定和输出文件检查。
+- [修订审查记录](skills/knowledge-explainer-video/assets/revision-review.template.json)：分别记录几何、静帧、原速动态、音画试听、字幕和完整解码；未执行的检查保持待办，不以渲染成功代替审片通过。
+
+本次只更新 Skill 与使用说明，不替换仓库中的 Git 演示视频；示例成片与最新制作规则的版本分别管理。
+
+```bash
+python skills/knowledge-explainer-video/scripts/validate_motion_score.py skills/knowledge-explainer-video/assets/motion-score.template.json
+python -m unittest discover -s skills/knowledge-explainer-video/scripts -p test_motion_score.py
+```
+
 ## 项目结构
 
 ```text
