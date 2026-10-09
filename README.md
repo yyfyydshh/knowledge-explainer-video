@@ -55,11 +55,13 @@ $knowledge-explainer-video
 
 人物贴图和插画默认**不套白框**；只有电脑屏幕、文件、窗口等真实容器才有边界。箭头要有明确起点和目标，转场尽量由上一画面已有的物件自然变化而来。可以多生成素材候选，但成片只保留准确、统一、真正帮助理解的画面。
 
-## 动画能力与长期复用（Skill 1.3.0）
+## 动画能力与长期复用（Skill 1.4.0）
 
 除了画风，制作还要先确定观众的观看过程。新版增加：
 
 - [十二原则的知识动画用法](skills/knowledge-explainer-video/references/motion-language.md)：预备动作、关键姿态、路线、速度、接触与反馈，以及多种有语义依据的转场。
+- [画面与动画优化推理](skills/knowledge-explainer-video/references/visual-revision-logic.md)：从语义变化、因果、注意力、连续性、阅读与证据定位问题，改善 PPT 感，并把真实录屏与报告指引组织为产品能力展示。
+- [字幕与手机可读性](skills/knowledge-explainer-video/references/captions-and-readability.md)：字号与信息层级、自然断句、可选半透明底、字体加载、句间闪烁、高清检查；附本次 Data Hub 参数示例，不作为所有项目默认值。
 - [历史反馈与回归项](skills/knowledge-explainer-video/references/feedback-and-regressions.md)：人物是行动组件、避免 PPT 化和无关装饰、无穿模、字幕安全区与全片节奏。区分通用要求和 Git 案例专用选择。
 - [特殊视频素材融合](skills/knowledge-explainer-video/references/footage-integration.md)：按源时间码与内容拆解录屏或视频，安排动画切入、局部解释、原声与切出，不只是插入播放框。
 - [动作谱模板](skills/knowledge-explainer-video/assets/motion-score.template.json)与 [校验脚本](skills/knowledge-explainer-video/scripts/validate_motion_score.py)：检查动作区间、阶段顺序、文字交接和锚点几何；不自动认定视觉流畅。
@@ -123,4 +125,4 @@ node skills/knowledge-explainer-video/scripts/test.mjs
 python skills/knowledge-explainer-video/scripts/validate_project.py skills/knowledge-explainer-video/assets/project-manifest.template.json
 ```
 
-讲稿、视觉、录音与正式时间线都有各自的确认条件；通过脚本检查不等于通过人工审片。原声访谈请用专门的访谈 Skill；长教程切章节和产品录屏演示请用教程 Skill，不要把这些任务硬套成知识动画。
+讲稿、视觉、录音与正式时间线都有各自的确认条件；通过脚本检查不等于通过人工审片。原声访谈请用专门的访谈 Skill；单纯把已有长教程或产品录屏切章节请用教程 Skill。用户明确选择本 Skill 制作旁白、解释动画与真实操作证据结合的产品能力片时，使用这里的混合制作流程。
